@@ -1,0 +1,28 @@
+.login-panel {
+  width: 400px;
+  background-color: #a6FCFF;
+  border-style: solid;
+  border-width: 10px;
+  border-color: #e6fcff;
+  border-radius: 3px;
+}
+.top-row {
+  padding-top: 5px;
+}
+.filled {
+  width: 100%;
+}
+.login-title {
+  margin: 10px auto 10px auto;
+  font-weight: bold;
+  font-size: 24pt;
+  color: #0011ff;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+}
