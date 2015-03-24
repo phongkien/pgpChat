@@ -32,7 +32,7 @@ app.controller("loginController", function($scope) {
       submitalue = {
         username: $scope.username,
         password: $scope.password,
-        verifypassword: $scope.verifypassword
+        verifyPassword: $scope.verifypassword
       };
       
       url = "/pgpChat/register";
@@ -51,7 +51,6 @@ app.controller("loginController", function($scope) {
     }
     
     if (submitValue !== "") {
-    	alert(submitValue);
       var submitStatus = $http.post(url, submitValue);
       submitStatus.success(function(dataFromServer, status, headers, config){
         alert("success!");
