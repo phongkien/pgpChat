@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html ng-app="pgpChat">
   <head>
@@ -7,8 +9,8 @@
     <script data-require="bootstrap@3.3.2" data-semver="3.3.2" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular-animate.js"></script>
-    <link rel="stylesheet" href="/pgpChat/static/css/style.css" />
-    <script src="/pgpChat/static/js/app.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
+    <script src="${pageContext.request.contextPath}/static/js/app.js"></script>
   </head>
 
   <body>
