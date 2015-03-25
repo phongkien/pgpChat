@@ -1,11 +1,12 @@
 // Code goes here
 var app = angular.module('pgpChat', ['ngAnimate']);
-app.controller("loginController", function($scope) {
+app.controller("loginController", function($scope, $http, $filter) {
   $scope.registered = false;
   $scope.username = "";
   $scope.password = "";
   $scope.verifypassword = "";
   $scope.error = false;
+  $scope.errorMessage = "";
   
   $scope.doRegister = function() {
     $scope.registered = true;
@@ -45,6 +46,8 @@ app.controller("loginController", function($scope) {
       url = "/pgpChat/login";
     } else if ($scope.isRegistered() && $scope.password !== $scope.verifypassword) {
       $scope.error = true;
+      
+      //TODO angular version?
       $("#errorMessage").html("Password mis-matched.");
       $("#pnlPassword").addClass("has-error");
       $("#pnlVerifyPassword").addClass("has-error");
@@ -53,7 +56,16 @@ app.controller("loginController", function($scope) {
     if (submitValue !== "") {
       var submitStatus = $http.post(url, submitValue);
       submitStatus.success(function(dataFromServer, status, headers, config){
-        alert("success!");
+    	  if (dataFromServer) {
+    		  var statusText = dataFromServer.statusText;
+    		  
+    		  if (statusText == "Success") {
+    			  alert("Success!");
+    		  } else {
+    			  $("#errorMessage").html(statusText); // TODO angular version?
+    			  $scope.error = true;
+    		  }
+    	  }
       });
       
       submitStatus.error(function(dataFromServer, status, headers, config) {

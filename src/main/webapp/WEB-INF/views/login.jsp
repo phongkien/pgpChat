@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="form-group row" ng-show="hasError()">
-            <div class="col-sm-10 filled text-danger" ng-model="errorMessag" id="errorMessage"></div>
+            <div class="col-sm-10 filled text-danger" ng-model="errorMessage" id="errorMessage"></div>
           </div>
           <div class="form-group">
             <div class="col-offset-10 col-sm-10">
