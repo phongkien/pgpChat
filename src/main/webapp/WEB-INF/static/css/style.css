@@ -1,3 +1,8 @@
+@font-face {
+	font-family: Age;
+	src: url(static/fonts/Age.otf);
+}
+
 .login-panel {
   width: 400px;
   background-color: #a6FCFF;
@@ -15,8 +20,9 @@
 .login-title {
   margin: 10px auto 10px auto;
   font-weight: bold;
-  font-size: 24pt;
+  font-size: 32pt;
   color: #0011ff;
+  font-family: Age;
 }
 
 .vertical-center {
@@ -25,4 +31,9 @@
 
   display: flex;
   align-items: center;
+}
+
+.error-message {
+	color: #ff0000;
+	font-weight: 800;
 }
