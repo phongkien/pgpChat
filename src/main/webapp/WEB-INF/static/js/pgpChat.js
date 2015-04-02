@@ -1,5 +1,4 @@
-// Code goes here
-var app = angular.module('pgpChat', [ 'ngAnimate' ]);
+var app = angular.module('pgpChat', [ 'ngAnimate']);
 
 app.controller("loginController", function($scope, $http, $filter) {
 	$scope.registered = false;
@@ -122,7 +121,7 @@ app.controller("loginController", function($scope, $http, $filter) {
 				username : $scope.username,
 				password : $scope.password,
 				_csrf : $("#csrfToken").val(),
-				'X-CSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+				'X-XSRF-TOKEN': $("meta[name='_csrf']").attr("content")
 			});
 
 			var submitStatus = $http({
@@ -153,5 +152,30 @@ app.controller("loginController", function($scope, $http, $filter) {
 			$scope.invalidPassword();
 			$scope.processing = false;
 		}
+	}
+});
+
+app.controller('chatController', function($scope, $http) {
+	this.sideBarExpanded = false;
+	
+	this.sideBarToggle = function() {
+		$("#menu").hide();
+		this.sideBarExpanded = !this.sideBarExpanded;
+		
+		if (this.sideBarExpanded) {
+			$("#side-bar").show("fast", function() {
+				$("#sideBarTitleRight").css("left", "160px");
+				$("#menu").show();
+			});
+		} else {
+			$("#side-bar").hide("fast", function(){
+				$("#sideBarTitleRight").css("left", "0px");
+				$("#menu").show();
+			});
+		}
+	};
+	
+	this.logout = function() {
+		$("#logoutForm").submit();
 	}
 });

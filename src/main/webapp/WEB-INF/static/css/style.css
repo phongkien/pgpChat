@@ -4,36 +4,118 @@
 }
 
 .login-panel {
-  width: 400px;
-  background-color: #a6FCFF;
-  border-style: solid;
-  border-width: 10px;
-  border-color: #e6fcff;
-  border-radius: 3px;
+	width: 400px;
+	background-color: #a6FCFF;
+	border-style: solid;
+	border-width: 10px;
+	border-color: #e6fcff;
+	border-radius: 3px;
 }
+
 .top-row {
-  padding-top: 5px;
+	padding-top: 5px;
 }
+
 .filled {
-  width: 100%;
+	width: 100%;
 }
+
 .login-title {
-  margin: 10px auto 10px auto;
-  font-weight: bold;
-  font-size: 32pt;
-  color: #0011ff;
-  font-family: Age;
+	margin: 10px auto 10px auto;
+	font-weight: bold;
+	font-size: 32pt;
+	color: #0011ff;
+	font-family: Age;
 }
 
 .vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
-
-  display: flex;
-  align-items: center;
+	min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+	min-height: 100vh; /* These two lines are counted as one :-)       */
+	display: flex;
+	align-items: center;
 }
 
 .error-message {
 	color: #ff0000;
 	font-weight: 800;
+}
+
+#content {
+	float: right;
+	width: 100%;
+	background-color: #cecece;
+	padding: 45px;
+}
+
+#menu {
+	display: block;
+	border-radius: 0;
+}
+
+#side-bar {
+	background-color: #dedede;
+	opacity: 1;
+	width: 200px;
+	float: none;
+	position: fixed;
+	z-index: 99;
+	display: none;
+}
+
+.filled-vertical {
+	min-height: 100%;
+	min-height: 100vh;
+}
+
+#sideBarFooter {
+	border-radius:0;
+}
+	
+.footer {
+	width: 100%;
+	bottom: 50px;
+	top: auto;
+	display: block;
+	position: absolute;
+}
+
+#sideBarTitleRight {
+	padding: 0;
+	position: absolute;
+	top:0;
+	left:0;
+	z-index: 101;
+}
+	
+#sideBarContent {
+	max-height: 100%;
+	max-height: 100vh;
+	margin-top: 40px;
+	overflow-y: auto;
+	height: 90%;
+	height: 90vh;
+}
+
+#chatContainer {
+	max-height: 90%;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+@media ( max-width : 500px) {
+
+}
+
+@media ( min-height : 300px) {
+	#chatContainer {
+		max-height: 80%;
+		max-height: 80vh;
+	}
+	#messagePanel {
+		padding-top: 10px;
+		padding-bottom: 5px;
+	}
+	#message {
+		padding: 20px !important;
+	}
 }

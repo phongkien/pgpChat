@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html ng-app="pgpChat">
   <head>
+  	<title>pgpChat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="_csrf" content="${_csrf.token}"/>
     <!-- default header name is X-CSRF-TOKEN -->
@@ -14,7 +15,6 @@
     <script data-require="bootstrap@3.3.2" data-semver="3.3.2" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular-animate.js"></script>
-   
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
     <script src="${pageContext.request.contextPath}/static/js/pgpChat.js"></script>
     <script>

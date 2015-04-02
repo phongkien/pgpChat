@@ -7,7 +7,15 @@ public class UserModel {
 	private String email;
 	private String firstName;
 	private String lastName;
+	private String verificationStringURL;
+	private String verificationCode;
 	
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -43,5 +51,11 @@ public class UserModel {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public String getVerificationStringURL() {
+		return verificationStringURL;
+	}
+	public void setVerificationStringURL(String verificationStringURL) {
+		this.verificationStringURL = verificationStringURL;
 	}
 }

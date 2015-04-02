@@ -1,11 +1,64 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<form action="${pageContext.request.contextPath}/j_spring_security_logout" method="post" id="logoutForm" name="logoutForm">
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-</form>
-<if test="${pageContext.request.userPrincipal.name != null}">
-<h2>
-	Welcome : ${pageContext.request.userPrincipal.name} | <a
-		href="javascript:document.logoutForm.submit()"> Logout</a>
-</h2>
-</if>
+<%@ page session="true" %>
+<!DOCTYPE html>
+<html ng-app="pgpChat">
+  <head>
+  	<title>pgpChat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+        
+    <script data-require="jquery@2.1.3" data-semver="2.1.3" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <link data-require="bootstrap@3.3.2" data-semver="3.3.2" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
+    <script data-require="bootstrap@3.3.2" data-semver="3.3.2" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular.js"></script>
+    <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular-animate.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
+    <script src="${pageContext.request.contextPath}/static/js/pgpChat.js"></script>
+    <script>
+    	var $HOME_PATH = "${pageContext.request.contextPath}";
+    </script>
+  </head>
+  <body ng-controller="chatController as chat">
+	<div class="container-fluid">
+		<div class="row">
+			<div id="sideBarTitleRight">
+				<button id="menu" type="button" class="btn btn-info" ng-click="chat.sideBarToggle()">
+					<span class="glyphicon glyphicon-align-justify"></span>
+				</button>
+			</div>
+			<div class="filled-vertical" id="content">
+				<div id="chatContainer">
+					Testing
+				</div>
+			</div>
+			<div class="filled-vertical" id="side-bar" ng-model="chat.sideBar">
+				<if test="${pageContext.request.userPrincipal.name != null}">
+					<div class="footer">
+						<a id="sideBarFooter" href="#" class="col-xs-12 btn btn-danger" ng-click="chat.logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+					</div>
+				</if>
+				<div id="sideBarContent">
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div class="navbar navbar-inverse navbar-fixed-bottom">
+				<div class="container">
+					<div class="navbar-collapse" id="footer-body">
+						<div>
+							<input id="message" class="form-control" type="text" ng-model="chat.message" placeholder="Type your message here"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+	</div>
+	<input type="hidden" id="txtMenu" value="{{chat.sideBarExpanded}}"/>
+	<form action="${pageContext.request.contextPath}/j_spring_security_logout" method="post" id="logoutForm" name="logoutForm">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+	</form>
+  </body>
+</html>
