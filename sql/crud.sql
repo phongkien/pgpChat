@@ -6,6 +6,7 @@ create table pgpchat.users (
     first_name	varchar(32) not null,
     last_name	varchar(32) not null,
     confirmed	char(1) not null default 'N',
+    verification_code	varchar(32),
     primary key(user_id),
     unique(email)
 );
@@ -36,8 +37,6 @@ insert into pgpchat.roles(role) values('USER_ROLE');
 insert into pgpchat.roles(role) values('ADMIN_ROLE');
 insert into pgpchat.roles(role) values('ROLE_USER');
 insert into pgpchat.roles(role) values('ROLE_ADMIN');
-insert into pgpchat.users(user_id, username, password, email, first_name, last_name, confirmed)
-values(1, 'phongkien', 'password', 'phongkien@gmail.com', 'Phong', 'Kien', 'Y');
 
 insert into pgpchat.user_role(user_id, role) values(1, 'ROLE_USER');
 insert into pgpchat.user_role(user_id, role) values(1, 'USER_ROLE');
