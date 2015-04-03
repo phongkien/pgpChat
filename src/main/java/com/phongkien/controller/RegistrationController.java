@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,19 +31,27 @@ import com.phongkien.utils.UtilsFunctions;
 public class RegistrationController {
 	@Autowired
 	private DataSource dataSource;
+
+	@Autowired
+	private MessageDigestPasswordEncoder messageDigester;
+
 	private static String SQL_CHECK_USERNAME = "select count(*) from pgpchat.users where username = ?";
 	private static String SQL_CHECK_EMAIL = "select count(*) from pgpchat.users where email = ?";
 	private static String SQL_INS_USER = "insert into pgpchat.users(user_id, username, password, email, first_name, last_name, confirmed, verification_code) values(?,?,?,?,?,?,?,?)";
 	private static String SQL_NEXT_USER = "select max(user_id) + 1 from pgpchat.users";
 	private static String SQL_WHITE_LIST = "select count(*) from pgpchat.white_list where email = ?";
 	private static String SQL_INS_USER_ROLE = "insert into pgpchat.user_role(user_id, role) values(?,?)";
-	private static String SQL_DEL_USER = "delete * from pgpchat.users where user_id = ?";
+	private static String SQL_DEL_USER = "delete from pgpchat.users where user_id = ?";
 	private static final Logger logger = Logger
 			.getLogger(RegistrationController.class);
 
 	// TODO: for now, default to Y, when email validation is implemented, change
 	// to N
 	private static String CONFIRMED_DEFAULT = "Y";
+	
+//	private String hash(String str) {
+//		return messageDigester.encodePassword(str, UtilsFunctions.SALT);
+//	}
 
 	@RequestMapping(value = "/register", method = { RequestMethod.POST,
 			RequestMethod.GET })
@@ -207,7 +216,8 @@ public class RegistrationController {
 					logger.debug("User id: " + nextId);
 				}
 				if (nextId > 0) {
-					user.setVerificationCode(UtilsFunctions.generateRandomKey(32));
+					user.setVerificationCode(UtilsFunctions
+							.generateRandomKey(32));
 					stmt = dataSource.getConnection().prepareStatement(
 							SQL_INS_USER);
 					stmt.setInt(1, nextId);
@@ -263,16 +273,15 @@ public class RegistrationController {
 								.getVerificationStringURL()
 								+ "id="
 								+ nextId
-								+ "&key="
-								+ user.getVerificationCode());
-						
+								+ "&key=" + user.getVerificationCode());
+
 						sendMail(user);
 					}
 				} catch (SQLException ex) {
 					logger.debug("Error occurred while creating role", ex);
 					retVal = "Database error";
 					deleteUser(String.valueOf(nextId));
-					success= false;
+					success = false;
 				} finally {
 					if (stmt != null) {
 						try {
@@ -290,7 +299,7 @@ public class RegistrationController {
 
 		return retVal;
 	}
-	
+
 	private void deleteUser(String userId) {
 		PreparedStatement stmt = null;
 		try {
@@ -308,8 +317,8 @@ public class RegistrationController {
 			if (stmt != null) {
 				try {
 					stmt.close();
-				} catch (Exception ex){
-					//whatevver
+				} catch (Exception ex) {
+					// whatevver
 				}
 			}
 		}

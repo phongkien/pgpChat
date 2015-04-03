@@ -1,3 +1,9 @@
+drop table pgpchat.user_role;
+drop table pgpchat.roles;
+drop table pgpchat.users;
+drop table pgpchat.white_list;
+drop table pgpchat.messages;
+
 create table pgpchat.users (
     user_id		int not null,
     username	varchar(32) not null,
@@ -29,8 +35,15 @@ create table pgpchat.white_list (
 	primary key(email)
 );
 
+create table pgpchat.messages (
+	from_user		varchar(32),
+	to_user			varchar(32),
+	message			varchar(300) not null
+);
+
 grant insert, delete, select, update on pgpchat.users to pgpchat;
 grant insert, delete, select, update on pgpchat.user_role to pgpchat;
+grant insert, delete, select, update on pgpchat.messages to pgpchat;
 grant select on pgpchat.white_list to pgpchat;
 
 insert into pgpchat.roles(role) values('USER_ROLE');
@@ -38,8 +51,6 @@ insert into pgpchat.roles(role) values('ADMIN_ROLE');
 insert into pgpchat.roles(role) values('ROLE_USER');
 insert into pgpchat.roles(role) values('ROLE_ADMIN');
 
-insert into pgpchat.user_role(user_id, role) values(1, 'ROLE_USER');
-insert into pgpchat.user_role(user_id, role) values(1, 'USER_ROLE');
 insert into pgpchat.white_list(email) values('phongkien@gmail.com');
 insert into pgpchat.white_list(email) values('city728@gmail.com');
 

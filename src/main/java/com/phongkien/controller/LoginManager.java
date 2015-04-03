@@ -10,8 +10,7 @@ import com.phongkien.model.StatusModel;
 
 @RestController
 public class LoginManager {
-
-	@RequestMapping(value={"/home", "/"}, method=RequestMethod.GET)
+	@RequestMapping(value={"/home"}, method=RequestMethod.GET)
 	public ModelAndView home() {
 		return new ModelAndView("home");
 	}

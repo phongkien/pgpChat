@@ -7,8 +7,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class PageManager {
 	@RequestMapping(value="/error/403")
-	public ModelAndView pageNotFound() {
+	public ModelAndView error403() {
 		return new ModelAndView("403");
+	}
+	
+	@RequestMapping(value="/error/404")
+	public ModelAndView error404() {
+		return new ModelAndView("404");
 	}
 	
 	@RequestMapping(value="/error/session/expired")

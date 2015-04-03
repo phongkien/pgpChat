@@ -4,11 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>403</title>
+<title>pgpChat</title>
 </head>
 <body>
-<div style="width:100%;margin-left:auto;margin-right:auto;font-size:14.0pt;color:#ff0000;font-weight:bold">
-	403 - Who are you?
-</div>
+Hello <%=request.getContextPath().concat("/home") %>
+<%
+	response.sendRedirect(request.getContextPath().concat("/home"));
+ %>
 </body>
 </html>

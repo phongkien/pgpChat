@@ -2,7 +2,15 @@ package com.phongkien.dao;
 
 import java.io.FileInputStream;
 import java.util.Properties;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.ServletContext;
+
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.web.context.ServletContextAware;
+
 import com.phongkien.utils.UtilsFunctions;
 
 /**
@@ -13,6 +21,7 @@ import com.phongkien.utils.UtilsFunctions;
  */
 public class DataSourceManager extends DriverManagerDataSource {
 	private String dbConfigPath = "";
+	private Logger logger = Logger.getLogger(DataSourceManager.class);
 
 	public DataSourceManager() {
 		super();

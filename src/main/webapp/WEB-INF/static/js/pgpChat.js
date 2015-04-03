@@ -1,6 +1,7 @@
 var app = angular.module('pgpChat', [ 'ngAnimate']);
+var colors = ["#ADD8E6"];
 
-app.controller("loginController", function($scope, $http, $filter) {
+app.controller("loginController", ['$scope', '$http', '$filter', function($scope, $http, $filter) {
 	$scope.registered = false;
 	$scope.username = "";
 	$scope.password = "";
@@ -153,16 +154,27 @@ app.controller("loginController", function($scope, $http, $filter) {
 			$scope.processing = false;
 		}
 	}
-});
+}]);
 
-app.controller('chatController', function($scope, $http) {
+app.controller('chatController', ['$scope', '$http', '$interval', '$anchorScroll', '$location', function($scope, $http, $interval, $anchorScroll, $location) {
+	var chat = this;
 	this.sideBarExpanded = false;
+	this.currentIdx = 0;
+	this.myIdx = -1;
+	this.currentUser = "";
+	this.activeUsers = [];
+	this.chatMessages = [];
+	this.chatToUser = "";
+	this.chatTo = "";
+	this.chatListener = "";
+	this.isBusy = false;
+	this.containerHash = "";
 	
 	this.sideBarToggle = function() {
 		$("#menu").hide();
-		this.sideBarExpanded = !this.sideBarExpanded;
+		chat.sideBarExpanded = !chat.sideBarExpanded;
 		
-		if (this.sideBarExpanded) {
+		if (chat.sideBarExpanded) {
 			$("#side-bar").show("fast", function() {
 				$("#sideBarTitleRight").css("left", "160px");
 				$("#menu").show();
@@ -178,4 +190,143 @@ app.controller('chatController', function($scope, $http) {
 	this.logout = function() {
 		$("#logoutForm").submit();
 	}
-});
+	
+	this.getActiveUsers = function() {
+		var url = $HOME_PATH + "/user/activeUsers";
+
+		var submitStatus = $http({
+			method: 'GET',
+			url: url,
+			headers : {
+				'X-XSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+			}
+		});
+
+		submitStatus.success(function(data, status, headers, config) {
+			if (data && data[0] && data[0].userName) {
+				chat.activeUsers = data;
+			}
+		});
+		
+		submitStatus.error(function(data, status, headers, config) {
+			chat.activeUsers = [];
+		});
+	}
+	
+	this.sendMessage = function() {
+		if (chat.message && chat.chatToUser) {
+			var message = {
+					from: $YOUR_NAME,
+					to: chat.chatToUser,
+					message: chat.message
+			};
+			
+			var url = $HOME_PATH + "/message/send";
+
+			var submitStatus = $http({
+				method: 'POST',
+				url: url,
+				headers : {
+					'X-XSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+				},
+				data: message
+			});
+
+			submitStatus.success(function(data, status, headers, config) {
+				if (data && data.statusText == "success") {
+					chat.pushMessage(message);
+					chat.message = "";
+				} else {
+					chat.sendFail();
+				}
+			});
+			
+			submitStatus.error(function(data, status, headers, config) {
+				chat.sendFail();
+			});			
+			
+		} else {
+			alert("Well you can't talk to yourself!\nSelect some one to talk to!");
+		}
+	};
+	
+	this.getMessages = function() {
+		if (!chat.isBusy) {
+			chat.isBusy = true;
+			var url = $HOME_PATH + "/message/get";
+	
+			var submitStatus = $http({
+				method: 'GET',
+				url: url,
+				headers : {
+					'X-XSRF-TOKEN': $("meta[name='_csrf']").attr("content")
+				}
+			});
+	
+			submitStatus.success(function(data, status, headers, config) {
+				if (data && data[0] && data[0].message) {
+					angular.forEach(data, function(value, key){
+						chat.pushMessage(value);
+					});
+				}
+				
+				chat.isBusy = false;
+			});
+			
+			submitStatus.error(function(data, status, headers, config) {
+				chat.isBusy = false;
+			});
+		}		
+	};
+	
+	this.pushMessage = function($value) {
+		var fromUser = "";
+		var keepGoing = true;
+		
+		if (chat.chatToUser) {
+			keepGoing = false;
+		}
+		
+		chat.chatMessages.push($value);
+		
+		angular.forEach($value, function(value, key){
+			if (keepGoing && value) {
+				if (value.from && fromUser == "") {
+					fromUser = value.fromUser;
+				} else if (key == "from" && fromUser == "") {
+					fromUser = value;
+				} else if (value.fromUser && fromUser != value.fromUser) {
+					fromUser = "";
+					keepGoing = false;
+				} else if (key == "from" && fromUser != value) {
+					fromUser = "";
+					keepGoing = false;
+				}
+			}
+		});
+		
+		if (fromUser) {
+			chat.setChatToUser(fromUser);
+		}
+		
+		var div = document.getElementById("chatContainer")
+		div.scrollTop = div.scrollHeight + 100;
+	};
+	
+	this.sendFail = function() {
+		alert("Fail to send message");
+	};
+	
+	this.setChatToUser = function($chatToUser) {
+		chat.chatToUser = $chatToUser;
+		chat.chatTo = "You are currently chat with >>> " + $chatToUser;
+		
+		if (chat.sideBarExpanded) {
+			chat.sideBarToggle();
+		}
+	};
+	
+	this.getActiveUsers();
+	
+	chat.chatListener = $interval(chat.getMessages, 1000);
+}]);

@@ -10,7 +10,7 @@
     <!-- default header name is X-CSRF-TOKEN -->
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
         
-    <script data-require="jquery@2.1.3" data-semver="2.1.3" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script data-require="jquery@2.1.3" data-semver="2.1.3" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <link data-require="bootstrap@3.3.2" data-semver="3.3.2" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" />
     <script data-require="bootstrap@3.3.2" data-semver="3.3.2" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular.js"></script>
@@ -19,6 +19,7 @@
     <script src="${pageContext.request.contextPath}/static/js/pgpChat.js"></script>
     <script>
     	var $HOME_PATH = "${pageContext.request.contextPath}";
+    	var $YOUR_NAME = "${pageContext.request.userPrincipal.name}";
     </script>
   </head>
   <body ng-controller="chatController as chat">
@@ -30,8 +31,13 @@
 				</button>
 			</div>
 			<div class="filled-vertical" id="content">
-				<div id="chatContainer">
-					Testing
+				<div id="chatToUser">{{chat.chatTo}}</div>
+				<div id="chatContainer" class="container">
+					<div class="chatMessageContainer col-xs-12 col-md-12" ng-repeat="chatMessage in chat.chatMessages">
+						<div class="fromUser">{{chatMessage.from}}</div>
+						<div class="chatMessage">{{chatMessage.message}}</div>
+					</div>
+					<a id="chatContainerBottom"></a>
 				</div>
 			</div>
 			<div class="filled-vertical" id="side-bar" ng-model="chat.sideBar">
@@ -40,7 +46,10 @@
 						<a id="sideBarFooter" href="#" class="col-xs-12 btn btn-danger" ng-click="chat.logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
 					</div>
 				</if>
-				<div id="sideBarContent">
+				<div id="sideBarContent" class="container">
+					<div ng-repeat="user in chat.activeUsers">
+						<a href="#" ng-click="chat.setChatToUser(user.userName)"><div class="col-xs-12">{{user.userName}}</div></a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -49,7 +58,10 @@
 				<div class="container">
 					<div class="navbar-collapse" id="footer-body">
 						<div>
-							<input id="message" class="form-control" type="text" ng-model="chat.message" placeholder="Type your message here"/>
+							<form ng-submit="chat.sendMessage()">
+								<input id="message" name="message" class="form-control" type="text" ng-model="chat.message" placeholder="Type your message here" ng-maxlength="200"/>
+								<input type="submit" style="display:none"/>					
+							</form>
 						</div>
 					</div>
 				</div>

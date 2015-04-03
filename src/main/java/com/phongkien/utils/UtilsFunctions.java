@@ -1,8 +1,10 @@
 package com.phongkien.utils;
 
+
 public final class UtilsFunctions {
 	private static final String keyString = "abcdefghijklmnopqrstuvwxzy0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private static Integer keyLength = keyString.length();
+	public static final String SALT = "Pow! Straight to the moon!";
 	
 	public static boolean isNull(String value) {
 		return value == null || value.trim().length() == 0;
