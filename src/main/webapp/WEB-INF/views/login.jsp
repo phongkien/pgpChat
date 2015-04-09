@@ -17,6 +17,7 @@
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular-animate.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
     <script src="${pageContext.request.contextPath}/static/js/pgpChat.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/controllers/loginController.js"></script>
     <script>
     	var $HOME_PATH = "${pageContext.request.contextPath}";
     </script>

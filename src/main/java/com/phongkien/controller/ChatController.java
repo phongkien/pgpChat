@@ -1,5 +1,6 @@
 package com.phongkien.controller;
 
+import java.security.Principal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.phongkien.UserVault;
 import com.phongkien.model.ActiveUser;
 import com.phongkien.model.MessageModel;
 import com.phongkien.model.StatusModel;
+import com.phongkien.model.UserModel;
 import com.phongkien.utils.UtilsFunctions;
 
 @RestController
@@ -140,6 +143,44 @@ public class ChatController {
 			closeStatement(stmt);
 		}
 
+		return status;
+	}
+	
+	@RequestMapping("/chatuser/info/get")
+	public @ResponseBody StatusModel getUserKeyInfo(Principal principal) {
+		StatusModel status = new StatusModel();		
+		
+		if (principal != null && !UtilsFunctions.isNull(principal.getName())) {
+			UserModel userModel = UserVault.getInstance().getUser(principal.getName());
+			
+			if (userModel != null) {
+				String passPhrase = userModel.getPassPhrase();
+				status.setStatusValue(passPhrase);
+				status.setStatusText("success");
+				status.setUserId(userModel.getUserId());
+			}
+		}
+		
+		return status;
+	}
+	
+	@RequestMapping("/my/public/key/update")
+	public @ResponseBody StatusModel updatePublicKey(@RequestBody UserModel userModel, Principal principal) {
+		StatusModel status = new StatusModel();
+		String userName = principal.getName();
+		
+		if (!UtilsFunctions.isNull(userName) && !UtilsFunctions.isNull(userModel.getUserId()) && !UtilsFunctions.isNull(userModel.getPublicKey())) {
+			UserModel mapModel = UserVault.getInstance().getUser(userName);
+			
+			if (mapModel != null) {
+				mapModel.setPublicKey(userModel.getPublicKey());
+			} else {
+				status.setStatusText("User is not in map.");
+			}
+		} else {
+			status.setStatusText("Unable to identify user or invalid input");
+		}
+		
 		return status;
 	}
 }

@@ -9,6 +9,9 @@ public class UserModel {
 	private String lastName;
 	private String verificationStringURL;
 	private String verificationCode;
+	private String passPhrase;
+	private String userId;
+	private String publicKey;
 	
 	public String getVerificationCode() {
 		return verificationCode;
@@ -57,5 +60,23 @@ public class UserModel {
 	}
 	public void setVerificationStringURL(String verificationStringURL) {
 		this.verificationStringURL = verificationStringURL;
+	}
+	public String getPassPhrase() {
+		return passPhrase;
+	}
+	public void setPassPhrase(String passPhrase) {
+		this.passPhrase = passPhrase;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getPublicKey() {
+		return publicKey;
+	}
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
 	}
 }

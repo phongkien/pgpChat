@@ -15,8 +15,14 @@
     <script data-require="bootstrap@3.3.2" data-semver="3.3.2" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular.js"></script>
     <script data-require="angular.js@1.3.14" data-semver="1.3.14" src="https://code.angularjs.org/1.3.14/angular-animate.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/sockjs.min.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/stomp.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
-    <script src="${pageContext.request.contextPath}/static/js/pgpChat.js"></script>
+	<script src="${pageContext.request.contextPath}/static/js/pgpChat.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/services/chatService.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/controllers/chatController.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/openpgp.worker.js"></script>
+    <script src="${pageContext.request.contextPath}/static/js/openpgp.js"></script>
     <script>
     	var $HOME_PATH = "${pageContext.request.contextPath}";
     	var $YOUR_NAME = "${pageContext.request.userPrincipal.name}";
@@ -37,7 +43,6 @@
 						<div class="fromUser">{{chatMessage.from}}</div>
 						<div class="chatMessage">{{chatMessage.message}}</div>
 					</div>
-					<a id="chatContainerBottom"></a>
 				</div>
 			</div>
 			<div class="filled-vertical" id="side-bar" ng-model="chat.sideBar">
@@ -53,12 +58,12 @@
 				</div>
 			</div>
 		</div>
-		<footer>
+		<footer id="chatFooter" ng-show="chat.chatToUser">
 			<div class="navbar navbar-inverse navbar-fixed-bottom">
 				<div class="container">
 					<div class="navbar-collapse" id="footer-body">
 						<div>
-							<form ng-submit="chat.sendMessage()">
+							<form ng-submit="chat.sendStompMessage()">
 								<input id="message" name="message" class="form-control" type="text" ng-model="chat.message" placeholder="Type your message here" ng-maxlength="200"/>
 								<input type="submit" style="display:none"/>					
 							</form>

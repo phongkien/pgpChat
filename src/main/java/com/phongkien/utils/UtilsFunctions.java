@@ -22,4 +22,8 @@ public final class UtilsFunctions {
 		
 		return key.toString();
 	}
+	
+	public static String generateUserId() {
+		return generateRandomKey(10).concat(String.valueOf(System.currentTimeMillis()));
+	}
 }

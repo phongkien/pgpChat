@@ -1,6 +1,6 @@
 @font-face {
 	font-family: Age;
-	src: url(static/fonts/Age.otf);
+	src: url(../fonts/Age.otf);
 }
 
 .login-panel {
@@ -23,7 +23,7 @@
 .login-title {
 	margin: 10px auto 10px auto;
 	font-weight: bold;
-	font-size: 32pt;
+	font-size: 24pt;
 	color: #0011ff;
 	font-family: Age;
 }
