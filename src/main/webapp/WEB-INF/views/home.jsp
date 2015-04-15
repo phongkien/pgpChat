@@ -30,6 +30,13 @@
   </head>
   <body ng-controller="chatController as chat">
 	<div class="container-fluid">
+		<header id="header" ng-show="!chat.desktopNotification">
+			<div class="row" id="notificationPanel">
+				<div class="col-md-6 col-md-offset-3" id="notification" ng-model="notification">
+					Desktop Notification if OFF, click <a href="#" ng-click="chat.requestNotificationPermission()">here</a> to turn it on.
+				</div>
+			</div>
+		</header>
 		<div class="row">
 			<div id="sideBarTitleRight">
 				<button id="menu" type="button" class="btn btn-info" ng-click="chat.sideBarToggle()">

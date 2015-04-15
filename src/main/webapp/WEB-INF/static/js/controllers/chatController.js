@@ -16,10 +16,47 @@
 		this.containerHash = "";
 		this.passPhrase = "";
 		this.userId = "";
+		this.desktopNotification = false;
+		this.lostFocus = false;
 		
 		angular.element(document).ready(function(){
+			chat.checkNotificationPermission();
 			chat.getPassPhrase();
 		});
+		
+		window.onblur = function() {
+			chat.lostFocus = true;
+		};
+		
+		window.onfocus = function() {
+			chat.lostFocus = false;
+		};
+		
+		this.checkNotificationPermission = function() {
+			var html5Notification = window.Notification || window.mozNotification || window.webkitNotification;
+			
+			if (!html5Notification) {
+				$("#notification").html("Sorry, your browser does not support Desktop Notification.");
+			} else {
+				if (html5Notification.permission == "granted") {
+					chat.desktopNotification = true;
+				};
+			}
+		};
+		
+		this.requestNotificationPermission = function() {
+			var html5Notification = window.Notification || window.mozNotification || window.webkitNotification;
+			
+			if (html5Notification) {
+				html5Notification.requestPermission(function(permission){
+					if (permission == 0 || permission == "granted") {
+						chat.desktopNotification = true;
+						//not sure why the above doesn't cause ng-show to hide.
+						$("#header").css("display", "none");
+					}
+				});
+			}
+		};
 		
 		this.sideBarToggle = function() {
 			$("#menu").hide();
@@ -176,34 +213,25 @@
 		
 		chatService.receive().then(null, null, function(message) {
 			chat.chatMessages.push(message);
-			chat.flash();
+			chat.sendHtml5Notification(message);
 		});
 		
 		var interval = "";
 		
-		this.flash = function() {
-			if (interval) {
-				$interval.cancel(interval);
-			}
-			
-			var originalTitle = $document[0].title;
-			var currentTitle = "";
-			interval = $interval(setTitle, 1000);
-			
-			function setTitle() {
-				if (currentTitle == originalTitle) {
-					currentTitle = "";
-				} else {
-					currentTitle = originalTitle;
-				}
+		this.sendHtml5Notification = function(message) {
+			if (chat.lostFocus == true) {
+				var notification = new Notification("Message from " + message.from, {
+					tag: 'pgpNotification',
+					icon: 'static/pgpchat.png',
+					body: message.message
+				});
 				
-				$document[0].title = currentTitle;
-			};
-			
-			$document[0].onmousemove = function() {
-				$interval.cancel(interval);
-				$document[0].title = originalTitle;
-			};
+				notification.onshow = function() {
+					setTimeout(function(){
+						notification.close();
+					}, 5000);
+				};
+			}
 		};
 		
 		this.getActiveUsers();

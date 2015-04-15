@@ -119,6 +119,13 @@
 	font-size:14.0pt;
 }
 
+#notificationPanel {
+	padding: 5px;
+	background-color: #000000;
+	font-size: 14.0pt;
+	color: #ff0000;
+}
+
 @media ( max-width : 500px) {
 	#content {
 		padding: 45px 0px 45px 0px;		
